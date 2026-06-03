@@ -2,10 +2,11 @@
 
 client_id = "43f7ebe1c4838987181ace9f7b11d396"
 name = "scalable-partnership-app"
-application_url = "https://scalable-partnership-app-production.up.railway.app"
+application_url = "https://example.com"
 embedded = true
 
 [access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products,write_metaobjects,write_metaobject_definitions"
 
 [product.metafields.app.demo_info]
@@ -44,10 +45,8 @@ api_version = "2026-07"
   topics = [ "app/scopes_update" ]
 
 [auth]
-redirect_urls = [
-  "https://scalable-partnership-app-production.up.railway.app/auth/callback",
-  "https://scalable-partnership-app-production.up.railway.app/auth/shopify/callback"
-]
+redirect_urls = [ "https://example.com/api/auth" ]
 
 [build]
+include_config_on_deploy = true
 automatically_update_urls_on_dev = true
