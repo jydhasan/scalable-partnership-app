@@ -1,46 +1,51 @@
-import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+client_id = "43f7ebe1c4838987181ace9f7b11d396"
+name = "scalable-partnership-app"
+application_url = "https://scalable-partnership-app-production.up.railway.app"
+embedded = true
 
-delete process.env.HOST;
+[access_scopes]
+scopes = "write_products,write_metaobjects,write_metaobject_definitions"
 
-const host = new URL(process.env.SHOPIFY_APP_URL || "http://localhost")
-  .hostname;
+[product.metafields.app.demo_info]
+type = "single_line_text_field"
+name = "Demo Source Info"
+description = "Tracks products created by the Shopify app template for development"
 
-let hmrConfig;
-if (host === "localhost") {
-  hmrConfig = {
-    protocol: "ws",
-    host: "localhost",
-    port: 64999,
-    clientPort: 64999,
-  };
-} else {
-  hmrConfig = {
-    protocol: "wss",
-    host: host,
-    port: parseInt(process.env.FRONTEND_PORT) || 8002,
-    clientPort: 443,
-  };
-}
+  [product.metafields.app.demo_info.access]
+  admin = "merchant_read_write"
 
-export default defineConfig({
-  server: {
-    allowedHosts: [host],
-    cors: {
-      preflightContinue: true,
-    },
-    port: Number(process.env.PORT || 3000),
-    hmr: hmrConfig,
-    fs: {
-      allow: ["app", "node_modules"],
-    },
-  },
-  plugins: [reactRouter(), tsconfigPaths()],
-  build: {
-    assetsInlineLimit: 0,
-  },
-  optimizeDeps: {
-    include: ["@shopify/app-bridge-react"],
-  },
-});
+[metaobjects.app.example]
+name = "Example"
+description = "An example metaobject definition created by this template"
+
+  [metaobjects.app.example.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example.fields.title]
+name = "Title"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.example.fields.description]
+name = "Description"
+type = "multi_line_text_field"
+
+[webhooks]
+api_version = "2026-07"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+[auth]
+redirect_urls = [
+  "https://scalable-partnership-app-production.up.railway.app/auth/callback",
+  "https://scalable-partnership-app-production.up.railway.app/auth/shopify/callback"
+]
+
+[build]
+automatically_update_urls_on_dev = true
